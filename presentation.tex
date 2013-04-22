@@ -8,62 +8,37 @@
   \titlepage
 \end{frame}
 \begin{frame}
-  \frametitle{Aims}
-  Very quickly, the aim of this presentation is to
+  \frametitle{Quick overview}
+  Originally this talk was going to be about dependent types.\\
   \pause
-  \begin{itemize}[<+->]
-    \item blast through basic concepts underlying type theory
-    \item touch upon what dependent typing is
-    \item spark interest in type theory
-    \item encourage you to learn everything mention properly
-    \end{itemize}
+  It turned out that I was running out of time before even getting
+  into regular typing.\\
+  \pause
+  Changed the topic to something that builds upon knowledge you most
+  likely already have: imperative programming.\\
+  \pause
+  This talk is going to essentially be a cut-down, partial, 10-minute
+  version of the excellent presentation given by Brian Beckman titled
+  ``Don't fear the Monad''.\\
+  \pause
+  Go watch it, it's awesome.
 \end{frame}
 \begin{frame}
-  \frametitle{Aims}
-  This presentation is not meant to
-  \pause
+  \frametitle{Quick overview}
+  \framesubtitle{Presentation structure}
+  Structure of this presentation
   \begin{itemize}[<+->]
-    \item present any new concepts
-    \item provide comprehensive overview of any of the topics
-    \item scare you
-  \end{itemize}
-  \pause
-  There's a lot of stuff that only gets skimmed over.\\
-  There's even more stuff that's outright missing.\\
-  \pause
-  \begin{itemize}
-    \item I actually wrote up a fair amount of slides on untyped and
-      typed $\lambda$-calculus but the presentation was too long
-      before even getting into the topic of this talk!
+    \item Functions
+      \begin{itemize}
+        \item more friendly notation
+        \item composition
+      \end{itemize}
+    \item Generic monoid definition
+    \item Simple monoid example (set of integers under addition)
+    \item List monoid example
+    \item Why would we ever want to abstract a monoid?
   \end{itemize}
 \end{frame}
-\begin{frame}
-  \frametitle{What is a type?}
-  \framesubtitle{The Curry Howard Isomorphism}
-  Common interpretation of Curry Howard isomorphism is to see types as
-  propositions.
-  \pause
-  \begin{exampleblock}{Notation}
-    We can read $p:P$ as `$p$ is a member of type $P$' or `$p$ is a proof of the
-    proposition $P$'
-  \end{exampleblock}
-  \pause
-  Ties in with intuitionistic (constructive) logic. Intuitionistic
-  logic differs from classical logic in that:
-  \pause
-  \begin{itemize}[<+->]
-    \item a statement is only true if there is a constructive proof of
-      it
-    \begin{itemize}
-      \item a constructive proof requires us to provide a witness
-          (an example) to make for a valid proof
-    \end{itemize}
-    \item no longer the question of `either true or false'
-  \end{itemize}
-  \pause
-  $p$ is our witness of $P$.
-\end{frame}
-
 \end{document}
 %%% Local Variables:
 %%% mode: latex
