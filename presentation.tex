@@ -29,7 +29,13 @@
   \end{itemize}
   \pause
   There's a lot of stuff that only gets skimmed over.\\
-  There's even more stuff that's outright missing!
+  There's even more stuff that's outright missing.\\
+  \pause
+  \begin{itemize}
+    \item I actually wrote up a fair amount of slides on untyped and
+      typed $\lambda$-calculus but the presentation was too long
+      before even getting into the topic of this talk!
+  \end{itemize}
 \end{frame}
 \begin{frame}
   \frametitle{What is a type?}
@@ -38,7 +44,7 @@
   propositions.
   \pause
   \begin{exampleblock}{Notation}
-    We can read $p:P$ as `$p$ is of type $P$' or `$p$ is a proof of the
+    We can read $p:P$ as `$p$ is a member of type $P$' or `$p$ is a proof of the
     proposition $P$'
   \end{exampleblock}
   \pause
@@ -57,165 +63,7 @@
   \pause
   $p$ is our witness of $P$.
 \end{frame}
-\begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Untyped $\lambda$-calculus }
-  You should have at least heard of $\lambda$-calculus by now.
-  \pause
-  \begin{itemize}[<+->]
-    \item Devised by Alonzo Church to investigate functions, function
-      application and recursion.
-    \item Most influential on functional programming languages (such as ML,
-      Haskell and Miranda).
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Untyped $\lambda$-calculus }
-  Some basic ideas
-  \pause
-  \begin{itemize}[<+->]
-    \item individual variables
-      \begin{itemize}
-        \item $v_0$, $v_1$, $x$, $y$
-      \end{itemize}
-    \item abstraction
-      \begin{itemize}
-        \item $(\lambda x.e)$ is a function that returns $e$, given a
-          formal parameter $x$
-      \end{itemize}
-    \item application
-      \begin{itemize}
-        \item $(e_1e_2)$ is an application of expression $e_1$ to
-          $e_2$
-        \item application is done by substitution: applying $(\lambda f.\lambda
-          x.f\:x)$ to $g$ gives us $(\lambda x.g\:x)$ where $g$ is
-          where $f$ was substituted by $g$
-        \item in general, $(\lambda x.e_1)e_2$ is just $e_1[e_2/x]$
-      \end{itemize}
-  \end{itemize}
-  \pause
-  Functions can (and do) take and return functions as arguments!
-\end{frame}
-\begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Untyped $\lambda$-calculus}
-  All functions have arity of 1. If we had $+$ defined in our language,
-  $(\lambda x.\lambda y. x + y)$ is a function that takes $x$ and
-  returns a function that takes $y$ and returns the result of $+$ on
-  $x$ and $y$.\\
-  \pause
-  For convenience, I'll refer to functions as taking more arguments.
-  \pause
-  \begin{exampleblock}{Identity function}
-    $(\lambda x.x)$ is just a function that returns whatever it's
-    given.
-  \end{exampleblock}
-  \pause
-  \begin{exampleblock}{Composition function}
-    $(\lambda f.\lambda g.\lambda x.f\:(g\:x))$ is the mathematical
-    composition function: think ``f(g(x))'' in other languages.
-  \end{exampleblock}
-  \pause
-  \begin{exampleblock}{A `flip' function}
-    $(\lambda f.\lambda x.\lambda y.f\:y\:x)$ is a function
-    that takes a function and 2 other parameters and applies $f$ to
-    $y$ and then applies the result to $x$. $f\:y\:x$ is the same as $(f\:y)\:x$.
-  \end{exampleblock}
-\end{frame}
-\begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Typed $\lambda$-calculus}
-  ``Given a set $B$ of base types, we form the set $S$ of simple types
-  closing under the rule of function formation''
-  \pause
-  \begin{itemize}[<+->]
-    \item This means that if $\sigma$ is a type and $\tau$ is a type
-      then $(\sigma \Rightarrow \tau)$ is also a type
-    \item $\Rightarrow$ is right associative
-  \end{itemize}
-  \pause
-  Again, some basic ideas that should look familiar
-  \pause
-  \begin{itemize}[<+->]
-    \item expression
-      \begin{itemize}
-        \item we write $e:\tau$ for `$e$ is a $\lambda$ expression of
-          type $\tau$'
-      \end{itemize}
-    \item individual variables
-      \begin{itemize}
-        \item $v_\tau,_0$, $v_\tau,_1$, $x_\tau$, $y_\tau$ for each
-          type $\tau$
-      \end{itemize}
-    \item abstraction
-      \begin{itemize}
-        \item if $x:\sigma$ and $e:\tau$ then $(\lambda x_\sigma
-          .e)\::\:(\sigma \Rightarrow \tau)$
-      \end{itemize}
-    \item application
-      \begin{itemize}
-        \item if $e_1 : (\sigma \Rightarrow \tau)$ and $e_2:\sigma$
-          then $(e_1\:e_2):\tau$
-      \end{itemize}
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Typed $\lambda$-calculus}
-  We define a `pair': if $x:\sigma$ and $y:\tau$ then $(x,y): \sigma
-  \times \tau$\\
-  \pause
-  We can now define $fst$ and $snd$
-  \pause
-  \begin{itemize}
-    \item if $(x,y):\sigma \times \tau$ then $fst\:(x,y)
-      \rightarrow x$ and $snd\:(x,y) \rightarrow y$
-    \item it should be easy to see that $(fst\:p, snd\:p) \rightarrow p$
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Natural number type}
-  \framesubtitle{Basic typing in action}
-  Firstly, we're going to add type $N$ to the set of our base types $B$ such that
-  $N \in B$. For this example, it's perfectly fine if $B = \{N\}$.\\
-  Secondly, we add two clauses to our syntax of expressions
-  \pause
-  \begin{itemize}[<+->]
-    \item Numbers
-      \begin{itemize}
-        \item 0 is of type $N$; that is $0:N$
-        \item if $n:N$ then $succ\:n:N$
-          \begin{itemize}
-            \item $succ$ stands for `successor'
-          \end{itemize}
-      \end{itemize}
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Natural number type}
-  \framesubtitle{Basic typing in action}
-  Firstly, we're going to add type $N$ to the set of our base types $B$ such that
-  $N \in B$. For this example, it's perfectly fine if $B = {N}$.\\
-  Secondly, we add two clauses to our syntax of expressions
-  \pause
-  \begin{itemize}[<+->]
-  \item Primitive Recursion
-    \begin{itemize}
-      \item for all types $\tau$, if $e_0:\tau$, $f:(N \Rightarrow
-        \tau \Rightarrow \tau)$ then $Prec\:e_0\:f:N \Rightarrow
-        \tau$.
-      \item $Prec$ is the `primitive recursor'
-      \item Rules for $Prec$ are
-      \begin{itemize}
-        \item $Prec\:e_0\:f\:0 \rightarrow e_0$
-        \item $Prec\:e_0\:f\:(n + 1) \rightarrow
-          f\:n\:(Prec\:e_0\:f\:n)$
-      \end{itemize}
-    \item $\rightarrow$ is read as `reduces to' here
-    \end{itemize}
-  \end{itemize}
-\end{frame}
+
 \end{document}
 %%% Local Variables:
 %%% mode: latex
