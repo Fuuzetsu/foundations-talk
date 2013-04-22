@@ -81,6 +81,10 @@
       \begin{itemize}
         \item $(e_1e_2)$ is an application of expression $e_1$ to
           $e_2$
+        \item application is done by substitution: applying $(\lambda f.\lambda
+          x.f\:x)$ to $g$ gives us $(\lambda x.g\:x)$ where $g$ is
+          where $f$ was substituted by $g$
+        \item in general, $(\lambda x.e_1)e_2$ is just $e_1[e_2/x]$
       \end{itemize}
     \item abstraction
       \begin{itemize}
