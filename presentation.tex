@@ -121,6 +121,57 @@
     $y$ and then applies the result to $x$. $f\:y\:x$ is the same as $(f\:y)\:x$.
   \end{exampleblock}
 \end{frame}
+\begin{frame}
+  \frametitle{Underlying concepts}
+  \framesubtitle{Typed $\lambda$-calculus}
+  ``Given a set $B$ of base types, we form the set $S$ of simple types
+  closing under the rule of function formation''
+  \pause
+  \begin{itemize}[<+->]
+    \item This means that if $\sigma$ is a type and $\tau$ is a type
+      then $(\sigma \Rightarrow \tau)$ is also a type
+    \item $\Rightarrow$ is right associative
+  \end{itemize}
+  \pause
+  Again, some basic ideas that should look familiar
+  \pause
+  \begin{itemize}[<+->]
+    \item expression
+      \begin{itemize}
+        \item we write $e:\tau$ for `$e$ is a $\lambda$ expression of
+          type $\tau$'
+      \end{itemize}
+    \item individual variables
+      \begin{itemize}
+        \item $v_\tau,_0$, $v_\tau,_1$, $x_\tau$, $y_\tau$ for each
+          type $\tau$
+      \end{itemize}
+    \item abstraction
+      \begin{itemize}
+        \item if $x:\sigma$ and $e:\tau$ then $(\lambda x_\sigma
+          .e)\::\:(\sigma \Rightarrow \tau)$
+      \end{itemize}
+    \item application
+      \begin{itemize}
+        \item if $e_1 : (\sigma \Rightarrow \tau)$ and $e_2:\sigma$
+          then $(e_1\:e_2):\tau$
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Underlying concepts}
+  \framesubtitle{Typed $\lambda$-calculus}
+  We define a `pair': if $x:\sigma$ and $y:\tau$ then $(x,y): \sigma
+  \times \tau$\\
+  \pause
+  We can now define $fst$ and $snd$
+  \pause
+  \begin{itemize}
+    \item if $(x,y):\sigma \times \tau$ then $fst\:(x,y)
+      \rightarrow x$ and $snd\:(x,y) \rightarrow y$
+    \item it should be easy to see that $(fst\:p, snd\:p) \rightarrow p$
+  \end{itemize}
+\end{frame}
 \end{document}
 %%% Local Variables:
 %%% mode: latex
