@@ -15,6 +15,7 @@
     \item blast through basic concepts underlying type theory
     \item touch upon what dependent typing is
     \item spark interest in type theory
+    \item encourage you to learn everything mention properly
     \end{itemize}
 \end{frame}
 \begin{frame}
@@ -27,7 +28,8 @@
     \item scare you
   \end{itemize}
   \pause
-  There's a lot of stuff that only gets skimmed over!
+  There's a lot of stuff that only gets skimmed over.\\
+  There's even more stuff that's outright missing!
 \end{frame}
 \begin{frame}
   \frametitle{What is a type?}
@@ -170,6 +172,48 @@
     \item if $(x,y):\sigma \times \tau$ then $fst\:(x,y)
       \rightarrow x$ and $snd\:(x,y) \rightarrow y$
     \item it should be easy to see that $(fst\:p, snd\:p) \rightarrow p$
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Natural number type}
+  \framesubtitle{Basic typing in action}
+  Firstly, we're going to add type $N$ to the set of our base types $B$ such that
+  $N \in B$. For this example, it's perfectly fine if $B = \{N\}$.\\
+  Secondly, we add two clauses to our syntax of expressions
+  \pause
+  \begin{itemize}[<+->]
+    \item Numbers
+      \begin{itemize}
+        \item 0 is of type $N$; that is $0:N$
+        \item if $n:N$ then $succ\:n:N$
+          \begin{itemize}
+            \item $succ$ stands for `successor'
+          \end{itemize}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Natural number type}
+  \framesubtitle{Basic typing in action}
+  Firstly, we're going to add type $N$ to the set of our base types $B$ such that
+  $N \in B$. For this example, it's perfectly fine if $B = {N}$.\\
+  Secondly, we add two clauses to our syntax of expressions
+  \pause
+  \begin{itemize}[<+->]
+  \item Primitive Recursion
+    \begin{itemize}
+      \item for all types $\tau$, if $e_0:\tau$, $f:(N \Rightarrow
+        \tau \Rightarrow \tau)$ then $Prec\:e_0\:f:N \Rightarrow
+        \tau$.
+      \item $Prec$ is the `primitive recursor'
+      \item Rules for $Prec$ are
+      \begin{itemize}
+        \item $Prec\:e_0\:f\:0 \rightarrow e_0$
+        \item $Prec\:e_0\:f\:(n + 1) \rightarrow
+          f\:n\:(Prec\:e_0\:f\:n)$
+      \end{itemize}
+    \item $\rightarrow$ is read as `reduces to' here
+    \end{itemize}
   \end{itemize}
 \end{frame}
 \end{document}
