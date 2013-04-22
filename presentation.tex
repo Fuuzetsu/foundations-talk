@@ -1,12 +1,121 @@
 \documentclass{beamer}
+\usetheme{Warsaw}
+\title[Dependent Types]{Quick look at Dependent Typing}
+\author{Mateusz Kowalczyk}
+\institute{University of Bath}
 \begin{document}
 \begin{frame}
-  \frametitle{Dependent Typing in 10 minutes}
-  Foo
+  \titlepage
 \end{frame}
 \begin{frame}
-  \frametitle{Slide 2}
-  Bar
+  \frametitle{Aims}
+  Very quickly, the aim of this presentation is to
+  \pause
+  \begin{itemize}[<+->]
+    \item blast through basic concepts underlying type theory
+    \item touch upon what dependent typing is
+    \item spark interest in type theory
+    \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Aims}
+  This presentation is not meant to
+  \pause
+  \begin{itemize}[<+->]
+    \item present any new concepts
+    \item provide comprehensive overview of any of the topics
+    \item scare you
+  \end{itemize}
+  \pause
+  There's a lot of stuff that only gets skimmed over!
+\end{frame}
+\begin{frame}
+  \frametitle{What is a type?}
+  \framesubtitle{The Curry Howard Isomorphism}
+  Common interpretation of Curry Howard isomorphism is to see types as
+  propositions.
+  \pause
+  \begin{exampleblock}{Notation}
+    We can read $p:P$ as `$p$ is of type $P$' or `$p$ is a proof of the
+    proposition $P$'
+  \end{exampleblock}
+  \pause
+  Ties in with intuitionistic (constructive) logic. Intuitionistic
+  logic differs from classical logic in that:
+  \pause
+  \begin{itemize}[<+->]
+    \item a statement is only true if there is a constructive proof of
+      it
+    \begin{itemize}
+      \item a constructive proof requires us to provide a witness
+          (an example) to make for a valid proof
+    \end{itemize}
+    \item no longer the question of `either true or false'
+  \end{itemize}
+  \pause
+  $p$ is our witness of $P$.
+\end{frame}
+\begin{frame}
+  \frametitle{Underlying concepts}
+  \framesubtitle{Untyped $\lambda$-calculus }
+  You should have at least heard of $\lambda$-calculus by now.
+  \pause
+  \begin{itemize}[<+->]
+    \item Devised by Alonzo Church to investigate functions, function
+      application and recursion.
+    \item Most influential on functional programming languages (such as ML,
+      Haskell and Miranda).
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Underlying concepts}
+  \framesubtitle{Untyped $\lambda$-calculus }
+  Some basic ideas
+  \pause
+  \begin{itemize}[<+->]
+    \item individual variables
+      \begin{itemize}
+        \item $v_0$, $v_1$, $x$, $y$
+      \end{itemize}
+    \item application
+      \begin{itemize}
+        \item $(e_1e_2)$ is an application of expression $e_1$ to
+          $e_2$
+      \end{itemize}
+    \item abstraction
+      \begin{itemize}
+        \item $(\lambda x.e)$ is a function that returns $e$, given a
+          formal parameter $x$
+      \end{itemize}
+  \end{itemize}
+  \pause
+  Functions can (and do) take and return functions as arguments!
+\end{frame}
+\begin{frame}
+  \frametitle{Underlying concepts}
+  \framesubtitle{Untyped $\lambda$-calculus}
+  All functions have arity of 1. If we had $+$ defined in our language,
+  $(\lambda x.\lambda y. x + y)$ is a function that takes $x$ and
+  returns a function that takes $y$ and returns the result of $+$ on
+  $x$ and $y$.\\
+  \pause
+  For convenience, I'll refer to functions as taking more arguments.
+  \pause
+  \begin{exampleblock}{Identity function}
+    $(\lambda x.x)$ is just a function that returns whatever it's
+    given.
+  \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Composition function}
+    $(\lambda f.\lambda g.\lambda x.f\:(g\:x))$ is the mathematical
+    composition function: think ``f(g(x))'' in other languages.
+  \end{exampleblock}
+  \pause
+  \begin{exampleblock}{A `flip' function}
+    $(\lambda f.\lambda x.\lambda y.f\:y\:x)$ is a function
+    that takes a function and 2 other parameters and applies $f$ to
+    $y$ and then applies the result to $x$. $f\:y\:x$ is the same as $(f\:y)\:x$.
+  \end{exampleblock}
 \end{frame}
 \end{document}
 %%% Local Variables:
