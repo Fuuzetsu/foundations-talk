@@ -77,6 +77,11 @@
       \begin{itemize}
         \item $v_0$, $v_1$, $x$, $y$
       \end{itemize}
+    \item abstraction
+      \begin{itemize}
+        \item $(\lambda x.e)$ is a function that returns $e$, given a
+          formal parameter $x$
+      \end{itemize}
     \item application
       \begin{itemize}
         \item $(e_1e_2)$ is an application of expression $e_1$ to
@@ -85,11 +90,6 @@
           x.f\:x)$ to $g$ gives us $(\lambda x.g\:x)$ where $g$ is
           where $f$ was substituted by $g$
         \item in general, $(\lambda x.e_1)e_2$ is just $e_1[e_2/x]$
-      \end{itemize}
-    \item abstraction
-      \begin{itemize}
-        \item $(\lambda x.e)$ is a function that returns $e$, given a
-          formal parameter $x$
       \end{itemize}
   \end{itemize}
   \pause
