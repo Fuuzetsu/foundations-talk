@@ -204,6 +204,31 @@
   \pause
   We can give this new function $(f \circ g)$ a name: $h = f \circ g$.
 \end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Monoid definition}
+  Now that we have a sane notation and function composition, we can
+  finally define a monoid. A monoid is a set $S$ along with a binary
+  operation $\cdot$ satisfying three simple laws:
+  \pause
+  \begin{itemize}[<+->]
+    \item Closure
+      \begin{itemize}
+        \item $\forall x,y \in S: x \cdot y \in S$
+      \end{itemize}
+    \item Associativity
+      \begin{itemize}
+        \item $\forall x,y,z \in S: (x \cdot y) \cdot z = x \cdot (y
+          \cdot z)$
+      \end{itemize}
+    \item Identity
+      \begin{itemize}
+        \item $\exists e \in S: \forall x \in S: e \cdot x = x \cdot e
+          = x$
+        \item Mind that $x \cdot y$ DOES NOT have to equal $y \cdot x$
+      \end{itemize}
+  \end{itemize}
+\end{frame}
 \end{document}
 %%% Local Variables:
 %%% mode: latex
