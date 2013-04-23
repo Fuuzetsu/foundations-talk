@@ -1,5 +1,5 @@
 \documentclass{beamer}
-\usepackage{listings}
+\usepackage{listings, amssymb}
 \usetheme{Warsaw}
 \title[Monoid explained]{Monoid explained to an imperative programmer}
 \author{Mateusz Kowalczyk}
@@ -225,9 +225,36 @@
       \begin{itemize}
         \item $\exists e \in S: \forall x \in S: e \cdot x = x \cdot e
           = x$
-        \item Mind that $x \cdot y$ DOES NOT have to equal $y \cdot x$
+        \item Monoids where $x \cdot y = y \cdot x$ are called
+          commutative monoids
       \end{itemize}
   \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{$\mathbb{Z}$ under addition}
+  We can easily show that a set of all integers ($\mathbb{Z}$) is a monoid
+  under addition: that is, we use $+$ for our $\cdot$.
+  \pause
+  \begin{itemize}[<+->]
+    \item Closure
+      \begin{itemize}
+        \item $\forall x,y \in \mathbb{Z} : x + y \in \mathbb{Z}$
+      \end{itemize}
+    \item Associativity
+      \begin{itemize}
+        \item $\forall x,y,z \in \mathbb{Z} : (x + y) + z = x + (y + z)$
+      \end{itemize}
+    \item Identity
+      \begin{itemize}
+        \item $\forall x \in \mathbb{Z} : 0 + x = x + 0 = x$
+        \item Here $0$ is our identity element
+        \item Happens to be a commutative monoid thanks to addition
+      \end{itemize}
+  \end{itemize}
+  \pause
+  We can also very easily show that $\mathbb{Z} / \{0\}$ under multiplication is
+  also a monoid: we use $1$ as the identity element.
 \end{frame}
 \end{document}
 %%% Local Variables:
