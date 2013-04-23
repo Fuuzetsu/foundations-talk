@@ -180,7 +180,7 @@
   Isn't $h\:f\:x = f\:x$ pointless though? Why not just write $f\:x$?\\
   \pause
   The idea is that we just wrote a function $h$ that takes any
-  function of type $a \rightarrow b$ and an $a$. As we saw with $id$,
+  function of type $a \rightarrow b$ and a value of type $a$. As we saw with $id$,
   $a$ and $b$ can be anything: the types are polymorphic.
 \end{frame}
 \begin{frame}
@@ -194,15 +194,15 @@
   where function composition steps in.\\
   \pause
   What we need is a function $h$ with a signature $(b \rightarrow c)
-  \rightarrow (a \rightarrow b) \rightarrow (a \rightarrow c)$.
-  So: $h\:f\:g\:x = f\:g\:x$.\\
+  \rightarrow (a \rightarrow b) \rightarrow (a \rightarrow c)$.\\
+  So: $h\:f\:g\:x = f\:(g\:x)$.\\
   \pause
   That's it! It's that simple. This operation is so common that we
   define $h\:f\:g\:x = f\:(g\:x)$ to be $(f \circ g)\:x$. So just $(f
   \circ g)$ is of type $a \rightarrow c$ and $(f \circ g)\:x$ is of
   type $c$.\\
   \pause
-  We can give this new function $(f \circ g)$ a name: $h = f \circ g$.
+  We can give this new function $(f \circ g)$ a name: $f' = f \circ g$.
 \end{frame}
 \begin{frame}
   \frametitle{Monoids}
@@ -255,6 +255,43 @@
   \pause
   We can also very easily show that $\mathbb{Z} / \{0\}$ under multiplication is
   also a monoid: we use $1$ as the identity element.
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Functions under composition}
+  Having talked about functions and composition, it's time to put the
+  to use. Consider a set of all functions of type $\tau \rightarrow \tau$,
+  F. We can form a monoid using $\circ$ as $\cdot$.
+  \pause
+  \begin{itemize}[<+->]
+    \item Closure
+      \begin{itemize}
+        \item $\forall f,g \in F : f \circ g \in F$
+        \item $((f:\tau \rightarrow \tau) \circ (g:\tau \rightarrow \tau)):\tau \rightarrow \tau$
+      \end{itemize}
+    \item Associativity
+      \begin{itemize}
+        \item $\forall f,g,h \in F : (f \circ g) \circ h = f
+          \circ (g \circ h)$
+        \item $\forall (x:\tau),\forall f,g,h \in F : (f \circ g) \circ
+          h\:x = f\:(g \circ h)\:x = f\:(g\:(h\:x))$
+        \item $\forall (x:\tau),\forall f,g,h \in F : f \circ (g \circ
+          h)\:x = f\:((g \circ h)\:x) = f\:(g\:(h\:x))$
+      \end{itemize}
+    \item Identity
+      \begin{itemize}
+        \item $\forall f \in F: id \circ f = f \circ id = f$
+        \item Here $id\:x = x$ is our identity element. $id$ is
+          polymorphic so it gets the type $(\tau \rightarrow \tau)
+          \rightarrow (\tau \rightarrow \tau)$
+        \item $\forall (x:\tau),\forall f \in F: (f \circ id)\:x = f\:(id\:x) = f\:x$
+        \item $\forall (x:\tau),\forall f \in F: (id \circ f)\:x =
+          id(f\:x) = f\:x$
+        \item Mind that by definition of $id$, $id\:f\:x = f\:x$ and
+          $f\:(id\:x) = f\:x$. Not applying to $x$, we just get $f$ in
+          both cases.
+      \end{itemize}
+  \end{itemize}
 \end{frame}
 \end{document}
 %%% Local Variables:
