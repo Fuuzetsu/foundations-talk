@@ -293,6 +293,56 @@
       \end{itemize}
   \end{itemize}
 \end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Small caveat}
+  It's important to note that for functions to form a monoid under
+  composition, the functions must be of a uniform type: that is, for
+  any function $f^n$ where $f^0:a$, $f^1:a \rightarrow a$, $f^k$ takes
+  $k$ arguments of type $a$.\\
+  \pause
+  This means that a set of all functions $g:a \rightarrow b$ does not
+  form a monoid under composition where $a \neq b$: it is only in a
+  monoidal category; we can't compose two $a \rightarrow b$ functions
+  together.\\
+  \pause
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Usage}
+  So, what's the point of monoids?
+  \pause
+  \begin{itemize}[<+->]
+    \item We get a $fold$ operation for free.
+      \begin{itemize}
+        \item Python's $reduce$ with the unit used as the initial
+          value
+      \end{itemize}
+    \item For functions, it ensures that whatever we do, we stay in
+      the monoid
+      \begin{itemize}
+        \item Gives us assurance about what we can do
+        \item Composing small parts is the way to control complexity
+      \end{itemize}
+    \item Only a step away from the ever powerful monads!
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Questions}
+  Hopefully I miraculously managed to fit in my assigned time.\\
+  Feel free to ask any questions or point out any mistakes.
+  \begin{block}{Contact}
+    mk440@bath.ac.uk; fuuzetsu@fuuzetsu.co.uk\\
+    Get these slides at
+    https://github.com/ShanaTsunTsunLove/foundations-talk
+  \end{block}
+  \begin{block}{A quote from the \#haskell IRC channel}
+    * roconnor: where are all the category theoriest? why don't they
+    already have all the answers for us?\\
+    * edwardk: roconnor: this is the point in your career where you look
+    around for the cavalry and realize that you're it ;)
+  \end{block}
+\end{frame}
 \end{document}
 %%% Local Variables:
 %%% mode: latex
