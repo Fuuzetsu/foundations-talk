@@ -1,8 +1,10 @@
 \documentclass{beamer}
+\usepackage{listings}
 \usetheme{Warsaw}
-\title[Dependent Types]{Quick look at Dependent Typing}
+\title[Monoid explained]{Monoid explained to an imperative programmer}
 \author{Mateusz Kowalczyk}
 \institute{University of Bath}
+\lstset{language=Java}
 \begin{document}
 \begin{frame}
   \titlepage
@@ -30,14 +32,177 @@
   \begin{itemize}[<+->]
     \item Functions
       \begin{itemize}
-        \item more friendly notation
-        \item composition
+        \item more friendly notation and function composition
       \end{itemize}
     \item Generic monoid definition
     \item Simple monoid example (set of integers under addition)
     \item List monoid example
-    \item Why would we ever want to abstract a monoid?
+    \item Why would we ever want to abstract to a monoid?
   \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Notation}
+  Here I'm going to define a notation that's more common in functional
+  programming languages. The imperative language snippets are going to
+  be in Java.\\
+  Here we have a simple method from $int$ to $int$
+  \pause
+  \lstinputlisting{snippets/SingleVar.java}
+  \pause
+  We see that $x$ is given type $int$.\\
+  From here on, we shall write this down as $x:int$.\\
+  \pause
+  In general, for all types $\tau$, $v:\tau$ is `v is a member of type $\tau$'.
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Notation}
+  Time for the same thing but on a function. I ask you to look past
+  the fact that Java only has methods; making those methods static
+  aims to lessen the difference.
+  \pause
+  \lstinputlisting{snippets/BasicFunc.java}
+  \pause
+  Here we have a very simple function $f$ that takes an $int$ (and binds it to
+  $x$) and returns an $int$.\\
+  \pause
+  With the new notation, we can write the type of $f$ as $f:int
+  \rightarrow int$.\\
+  \pause
+  Note how $x:int$ and $f:int \rightarrow int$ use the same notation.
+  \pause
+  We also define $a \rightarrow b \rightarrow c \equiv (a
+  \rightarrow b) \rightarrow c$, i.e. the type signature is left associative.
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Notation}
+  Time for simple function application. Consider the same code again.
+  \pause
+  \lstinputlisting{snippets/BasicFunc.java}
+  \pause
+  We know that $f:int \rightarrow int$. Now consider any $v:int$. In
+  Java, we might use the function like \lstinline|a = f(v);|. What is
+  the type of $a$? Well, we take a $f:int \rightarrow int$ and feed an
+  $int$ to it so we get an $int$ back.\\
+  \pause
+  With our new notation, we shall write \lstinline|f(v);| as $f\:v$.\\
+
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Consider the following.
+  \lstinputlisting{snippets/TwoBasicFunc.java}
+  \pause
+  We have $f:int \rightarrow int$ and $g:int \rightarrow int$.\\
+  Let's say we want to apply $g$ first and then $f$ first. In Java
+  we'd right \lstinline|f(g(v));|. With our new notation we write
+  $f\:g\:v$. Note that application is left associative here.\\
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Let's not stop on $int$s though and go generic.
+  \lstinputlisting{snippets/Identity.java}
+  \pause
+  Here we have a function $id:A \rightarrow A$; it's a trivial
+  function that just returns its argument. What's important is that
+  it accepts any type: \lstinline|<A>| means a generic type $A$ in
+  Java.\\
+  \pause
+  In our notation, this is simply $id:A \rightarrow A$: nothing
+  special about it!
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  We can mix types without a problem! Consider $f:b \rightarrow c$, $g:a
+  \rightarrow b$ and $x:a$.\\
+  \pause
+  We can very easily see that $g\:x:b$. So what's the type of
+  $f\:(g\:x)$? Well, it's just $c$! $g\:x$ provides us a value of type
+  $b$ and we apply $f:b \rightarrow c$ to it.\\
+  \pause
+  Mind that we need the parenthesis in $f\:(g\:x)$ as we have defined
+  function application to be left associative.\\
+  Without parenthesis, we'd get $f\:g\:x \equiv (f\:g)\:x$. But we
+  can't have $f\:g$ because $f$ takes a value of type $b$ and $g$ is
+  of type $a \rightarrow b$.\\
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Before we proceed, I'd like to draw attention to the fact that the
+  type notation for `variables' and for functions is basically the
+  same.\\
+  \pause
+  In fact, we can think of $x:a$ as a nullary function of type $a$: a function that takes
+  no arguments! Consider a function with the following signature then:
+  $applier:(a \rightarrow b) \rightarrow a \rightarrow b$. It might
+  look different than all the previous ones but let's try to read
+  it.\\
+  \pause
+  $(a \rightarrow b)$ is just a function that takes a value of type
+  $a$ and returns a value of type $b$. So what's $(a \rightarrow b)
+  \rightarrow a \rightarrow b$? Well, it's just a function that takes a value of
+  type $a \rightarrow b$, a value of type $a$ and returns a $b$. The
+  first argument just happens to be a function!\\
+  \pause
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Continuing from the previous slide, I can show that making such a
+  function is fairly trivial. We need to define syntax for creating
+  functions first though.\\
+  \pause
+  \lstinputlisting{snippets/BasicFunc.java}
+  We can write this function like this:
+  \lstinputlisting{snippets/HaskFunc}
+  \pause
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  So going back to our $(a \rightarrow b)
+  \rightarrow a \rightarrow b$ function, how can we make one? Let's
+  call this function $h$:
+  \lstinputlisting{snippets/Applier}
+  \pause
+  Simple stuff! It turns out that $h$ is just function application
+  that we've been doing all the time!
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Isn't $h\:f\:x = f\:x$ pointless though? Why not just write $f\:x$?\\
+  \pause
+  The idea is that we just wrote a function $h$ that takes any
+  function of type $a \rightarrow b$ and an $a$. As we saw with $id$,
+  $a$ and $b$ can be anything: the types are polymorphic.
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  When we previously did a $f\:(g\:x)$, what we really wanted is a
+  function that does $g$ and then $f$ on $x$, in order.\\
+  Here $f:b \rightarrow c$, $g:a \rightarrow b$ and $x:a$.
+  \pause
+  So we want some $h:a \rightarrow c$. How can we produce it? This is
+  where function composition steps in.\\
+  \pause
+  What we need is a function $h$ with a signature $(b \rightarrow c)
+  \rightarrow (a \rightarrow b) \rightarrow (a \rightarrow c)$.
+  So: $h\:f\:g\:x = f\:g\:x$.\\
+  \pause
+  That's it! It's that simple. This operation is so common that we
+  define $h\:f\:g\:x = f\:(g\:x)$ to be $(f \circ g)\:x$. So just $(f
+  \circ g)$ is of type $a \rightarrow c$ and $(f \circ g)\:x$ is of
+  type $c$.\\
+  \pause
+  We can give this new function $(f \circ g)$ a name: $h = f \circ g$.
 \end{frame}
 \end{document}
 %%% Local Variables:
