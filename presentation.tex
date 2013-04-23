@@ -1,220 +1,347 @@
 \documentclass{beamer}
+\usepackage{listings, amssymb}
 \usetheme{Warsaw}
-\title[Dependent Types]{Quick look at Dependent Typing}
+\title[Monoid explained]{Monoid explained to an imperative programmer}
 \author{Mateusz Kowalczyk}
 \institute{University of Bath}
+\lstset{language=Java}
 \begin{document}
 \begin{frame}
   \titlepage
 \end{frame}
 \begin{frame}
-  \frametitle{Aims}
-  Very quickly, the aim of this presentation is to
+  \frametitle{Quick overview}
+  Originally this talk was going to be about dependent types.\\
   \pause
-  \begin{itemize}[<+->]
-    \item blast through basic concepts underlying type theory
-    \item touch upon what dependent typing is
-    \item spark interest in type theory
-    \item encourage you to learn everything mention properly
-    \end{itemize}
+  It turned out that I was running out of time before even getting
+  into regular typing.\\
+  \pause
+  Changed the topic to something that builds upon knowledge you most
+  likely already have: imperative programming.\\
+  \pause
+  This talk is going to essentially be a cut-down, partial, 10-minute
+  version of the excellent presentation given by Brian Beckman titled
+  ``Don't fear the Monad''.\\
+  \pause
+  Go watch it, it's awesome.
 \end{frame}
 \begin{frame}
-  \frametitle{Aims}
-  This presentation is not meant to
-  \pause
+  \frametitle{Quick overview}
+  \framesubtitle{Presentation structure}
+  Structure of this presentation
   \begin{itemize}[<+->]
-    \item present any new concepts
-    \item provide comprehensive overview of any of the topics
-    \item scare you
-  \end{itemize}
-  \pause
-  There's a lot of stuff that only gets skimmed over.\\
-  There's even more stuff that's outright missing!
-\end{frame}
-\begin{frame}
-  \frametitle{What is a type?}
-  \framesubtitle{The Curry Howard Isomorphism}
-  Common interpretation of Curry Howard isomorphism is to see types as
-  propositions.
-  \pause
-  \begin{exampleblock}{Notation}
-    We can read $p:P$ as `$p$ is of type $P$' or `$p$ is a proof of the
-    proposition $P$'
-  \end{exampleblock}
-  \pause
-  Ties in with intuitionistic (constructive) logic. Intuitionistic
-  logic differs from classical logic in that:
-  \pause
-  \begin{itemize}[<+->]
-    \item a statement is only true if there is a constructive proof of
-      it
-    \begin{itemize}
-      \item a constructive proof requires us to provide a witness
-          (an example) to make for a valid proof
-    \end{itemize}
-    \item no longer the question of `either true or false'
-  \end{itemize}
-  \pause
-  $p$ is our witness of $P$.
-\end{frame}
-\begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Untyped $\lambda$-calculus }
-  You should have at least heard of $\lambda$-calculus by now.
-  \pause
-  \begin{itemize}[<+->]
-    \item Devised by Alonzo Church to investigate functions, function
-      application and recursion.
-    \item Most influential on functional programming languages (such as ML,
-      Haskell and Miranda).
+    \item Functions
+      \begin{itemize}
+        \item more friendly notation and function composition
+      \end{itemize}
+    \item Generic monoid definition
+    \item Simple monoid example (set of integers under addition)
+    \item List monoid example
+    \item Why would we ever want to abstract to a monoid?
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Untyped $\lambda$-calculus }
-  Some basic ideas
+  \frametitle{Functions}
+  \framesubtitle{Notation}
+  Here I'm going to define a notation that's more common in functional
+  programming languages. The imperative language snippets are going to
+  be in Java.\\
+  Here we have a simple method from $int$ to $int$
   \pause
-  \begin{itemize}[<+->]
-    \item individual variables
-      \begin{itemize}
-        \item $v_0$, $v_1$, $x$, $y$
-      \end{itemize}
-    \item abstraction
-      \begin{itemize}
-        \item $(\lambda x.e)$ is a function that returns $e$, given a
-          formal parameter $x$
-      \end{itemize}
-    \item application
-      \begin{itemize}
-        \item $(e_1e_2)$ is an application of expression $e_1$ to
-          $e_2$
-        \item application is done by substitution: applying $(\lambda f.\lambda
-          x.f\:x)$ to $g$ gives us $(\lambda x.g\:x)$ where $g$ is
-          where $f$ was substituted by $g$
-        \item in general, $(\lambda x.e_1)e_2$ is just $e_1[e_2/x]$
-      \end{itemize}
-  \end{itemize}
+  \lstinputlisting{snippets/SingleVar.java}
   \pause
-  Functions can (and do) take and return functions as arguments!
+  We see that $x$ is given type $int$.\\
+  From here on, we shall write this down as $x:int$.\\
+  \pause
+  In general, for all types $\tau$, $v:\tau$ is `v is a member of type $\tau$'.
 \end{frame}
 \begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Untyped $\lambda$-calculus}
-  All functions have arity of 1. If we had $+$ defined in our language,
-  $(\lambda x.\lambda y. x + y)$ is a function that takes $x$ and
-  returns a function that takes $y$ and returns the result of $+$ on
-  $x$ and $y$.\\
+  \frametitle{Functions}
+  \framesubtitle{Notation}
+  Time for the same thing but on a function. I ask you to look past
+  the fact that Java only has methods; making those methods static
+  aims to lessen the difference.
   \pause
-  For convenience, I'll refer to functions as taking more arguments.
+  \lstinputlisting{snippets/BasicFunc.java}
   \pause
-  \begin{exampleblock}{Identity function}
-    $(\lambda x.x)$ is just a function that returns whatever it's
-    given.
-  \end{exampleblock}
+  Here we have a very simple function $f$ that takes an $int$ (and binds it to
+  $x$) and returns an $int$.\\
   \pause
-  \begin{exampleblock}{Composition function}
-    $(\lambda f.\lambda g.\lambda x.f\:(g\:x))$ is the mathematical
-    composition function: think ``f(g(x))'' in other languages.
-  \end{exampleblock}
+  With the new notation, we can write the type of $f$ as $f:int
+  \rightarrow int$.\\
   \pause
-  \begin{exampleblock}{A `flip' function}
-    $(\lambda f.\lambda x.\lambda y.f\:y\:x)$ is a function
-    that takes a function and 2 other parameters and applies $f$ to
-    $y$ and then applies the result to $x$. $f\:y\:x$ is the same as $(f\:y)\:x$.
-  \end{exampleblock}
+  Note how $x:int$ and $f:int \rightarrow int$ use the same notation.
+  \pause
+  We also define $a \rightarrow b \rightarrow c \equiv (a
+  \rightarrow b) \rightarrow c$, i.e. the type signature is left associative.
 \end{frame}
 \begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Typed $\lambda$-calculus}
-  ``Given a set $B$ of base types, we form the set $S$ of simple types
-  closing under the rule of function formation''
+  \frametitle{Functions}
+  \framesubtitle{Notation}
+  Time for simple function application. Consider the same code again.
+  \pause
+  \lstinputlisting{snippets/BasicFunc.java}
+  \pause
+  We know that $f:int \rightarrow int$. Now consider any $v:int$. In
+  Java, we might use the function like \lstinline|a = f(v);|. What is
+  the type of $a$? Well, we take a $f:int \rightarrow int$ and feed an
+  $int$ to it so we get an $int$ back.\\
+  \pause
+  With our new notation, we shall write \lstinline|f(v);| as $f\:v$.\\
+
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Consider the following.
+  \lstinputlisting{snippets/TwoBasicFunc.java}
+  \pause
+  We have $f:int \rightarrow int$ and $g:int \rightarrow int$.\\
+  Let's say we want to apply $g$ first and then $f$ first. In Java
+  we'd right \lstinline|f(g(v));|. With our new notation we write
+  $f\:g\:v$. Note that application is left associative here.\\
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Let's not stop on $int$s though and go generic.
+  \lstinputlisting{snippets/Identity.java}
+  \pause
+  Here we have a function $id:A \rightarrow A$; it's a trivial
+  function that just returns its argument. What's important is that
+  it accepts any type: \lstinline|<A>| means a generic type $A$ in
+  Java.\\
+  \pause
+  In our notation, this is simply $id:A \rightarrow A$: nothing
+  special about it!
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  We can mix types without a problem! Consider $f:b \rightarrow c$, $g:a
+  \rightarrow b$ and $x:a$.\\
+  \pause
+  We can very easily see that $g\:x:b$. So what's the type of
+  $f\:(g\:x)$? Well, it's just $c$! $g\:x$ provides us a value of type
+  $b$ and we apply $f:b \rightarrow c$ to it.\\
+  \pause
+  Mind that we need the parenthesis in $f\:(g\:x)$ as we have defined
+  function application to be left associative.\\
+  Without parenthesis, we'd get $f\:g\:x \equiv (f\:g)\:x$. But we
+  can't have $f\:g$ because $f$ takes a value of type $b$ and $g$ is
+  of type $a \rightarrow b$.\\
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Before we proceed, I'd like to draw attention to the fact that the
+  type notation for `variables' and for functions is basically the
+  same.\\
+  \pause
+  In fact, we can think of $x:a$ as a nullary function of type $a$: a function that takes
+  no arguments! Consider a function with the following signature then:
+  $applier:(a \rightarrow b) \rightarrow a \rightarrow b$. It might
+  look different than all the previous ones but let's try to read
+  it.\\
+  \pause
+  $(a \rightarrow b)$ is just a function that takes a value of type
+  $a$ and returns a value of type $b$. So what's $(a \rightarrow b)
+  \rightarrow a \rightarrow b$? Well, it's just a function that takes a value of
+  type $a \rightarrow b$, a value of type $a$ and returns a $b$. The
+  first argument just happens to be a function!\\
+  \pause
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Continuing from the previous slide, I can show that making such a
+  function is fairly trivial. We need to define syntax for creating
+  functions first though.\\
+  \pause
+  \lstinputlisting{snippets/BasicFunc.java}
+  We can write this function like this:
+  \lstinputlisting{snippets/HaskFunc}
+  \pause
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  So going back to our $(a \rightarrow b)
+  \rightarrow a \rightarrow b$ function, how can we make one? Let's
+  call this function $h$:
+  \lstinputlisting{snippets/Applier}
+  \pause
+  Simple stuff! It turns out that $h$ is just function application
+  that we've been doing all the time!
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  Isn't $h\:f\:x = f\:x$ pointless though? Why not just write $f\:x$?\\
+  \pause
+  The idea is that we just wrote a function $h$ that takes any
+  function of type $a \rightarrow b$ and a value of type $a$. As we saw with $id$,
+  $a$ and $b$ can be anything: the types are polymorphic.
+\end{frame}
+\begin{frame}
+  \frametitle{Functions}
+  \framesubtitle{Composition}
+  When we previously did a $f\:(g\:x)$, what we really wanted is a
+  function that does $g$ and then $f$ on $x$, in order.\\
+  Here $f:b \rightarrow c$, $g:a \rightarrow b$ and $x:a$.
+  \pause
+  So we want some $h:a \rightarrow c$. How can we produce it? This is
+  where function composition steps in.\\
+  \pause
+  What we need is a function $h$ with a signature $(b \rightarrow c)
+  \rightarrow (a \rightarrow b) \rightarrow (a \rightarrow c)$.\\
+  So: $h\:f\:g\:x = f\:(g\:x)$.\\
+  \pause
+  That's it! It's that simple. This operation is so common that we
+  define $h\:f\:g\:x = f\:(g\:x)$ to be $(f \circ g)\:x$. So just $(f
+  \circ g)$ is of type $a \rightarrow c$ and $(f \circ g)\:x$ is of
+  type $c$.\\
+  \pause
+  We can give this new function $(f \circ g)$ a name: $f' = f \circ g$.
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Monoid definition}
+  Now that we have a sane notation and function composition, we can
+  finally define a monoid. A monoid is a set $S$ along with a binary
+  operation $\cdot$ satisfying three simple laws:
   \pause
   \begin{itemize}[<+->]
-    \item This means that if $\sigma$ is a type and $\tau$ is a type
-      then $(\sigma \Rightarrow \tau)$ is also a type
-    \item $\Rightarrow$ is right associative
-  \end{itemize}
-  \pause
-  Again, some basic ideas that should look familiar
-  \pause
-  \begin{itemize}[<+->]
-    \item expression
+    \item Closure
       \begin{itemize}
-        \item we write $e:\tau$ for `$e$ is a $\lambda$ expression of
-          type $\tau$'
+        \item $\forall x,y \in S: x \cdot y \in S$
       \end{itemize}
-    \item individual variables
+    \item Associativity
       \begin{itemize}
-        \item $v_\tau,_0$, $v_\tau,_1$, $x_\tau$, $y_\tau$ for each
-          type $\tau$
+        \item $\forall x,y,z \in S: (x \cdot y) \cdot z = x \cdot (y
+          \cdot z)$
       \end{itemize}
-    \item abstraction
+    \item Identity
       \begin{itemize}
-        \item if $x:\sigma$ and $e:\tau$ then $(\lambda x_\sigma
-          .e)\::\:(\sigma \Rightarrow \tau)$
-      \end{itemize}
-    \item application
-      \begin{itemize}
-        \item if $e_1 : (\sigma \Rightarrow \tau)$ and $e_2:\sigma$
-          then $(e_1\:e_2):\tau$
+        \item $\exists e \in S: \forall x \in S: e \cdot x = x \cdot e
+          = x$
+        \item Monoids where $x \cdot y = y \cdot x$ are called
+          commutative monoids
       \end{itemize}
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Underlying concepts}
-  \framesubtitle{Typed $\lambda$-calculus}
-  We define a `pair': if $x:\sigma$ and $y:\tau$ then $(x,y): \sigma
-  \times \tau$\\
-  \pause
-  We can now define $fst$ and $snd$
-  \pause
-  \begin{itemize}
-    \item if $(x,y):\sigma \times \tau$ then $fst\:(x,y)
-      \rightarrow x$ and $snd\:(x,y) \rightarrow y$
-    \item it should be easy to see that $(fst\:p, snd\:p) \rightarrow p$
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Natural number type}
-  \framesubtitle{Basic typing in action}
-  Firstly, we're going to add type $N$ to the set of our base types $B$ such that
-  $N \in B$. For this example, it's perfectly fine if $B = \{N\}$.\\
-  Secondly, we add two clauses to our syntax of expressions
+  \frametitle{Monoids}
+  \framesubtitle{$\mathbb{Z}$ under addition}
+  We can easily show that a set of all integers ($\mathbb{Z}$) is a monoid
+  under addition: that is, we use $+$ for our $\cdot$.
   \pause
   \begin{itemize}[<+->]
-    \item Numbers
+    \item Closure
       \begin{itemize}
-        \item 0 is of type $N$; that is $0:N$
-        \item if $n:N$ then $succ\:n:N$
-          \begin{itemize}
-            \item $succ$ stands for `successor'
-          \end{itemize}
+        \item $\forall x,y \in \mathbb{Z} : x + y \in \mathbb{Z}$
+      \end{itemize}
+    \item Associativity
+      \begin{itemize}
+        \item $\forall x,y,z \in \mathbb{Z} : (x + y) + z = x + (y + z)$
+      \end{itemize}
+    \item Identity
+      \begin{itemize}
+        \item $\forall x \in \mathbb{Z} : 0 + x = x + 0 = x$
+        \item Here $0$ is our identity element
+        \item Happens to be a commutative monoid thanks to addition
+      \end{itemize}
+  \end{itemize}
+  \pause
+  We can also very easily show that $\mathbb{Z} / \{0\}$ under multiplication is
+  also a monoid: we use $1$ as the identity element.
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Functions under composition}
+  Having talked about functions and composition, it's time to put the
+  to use. Consider a set of all functions of type $\tau \rightarrow \tau$,
+  F. We can form a monoid using $\circ$ as $\cdot$.
+  \pause
+  \begin{itemize}[<+->]
+    \item Closure
+      \begin{itemize}
+        \item $\forall f,g \in F : f \circ g \in F$
+        \item $((f:\tau \rightarrow \tau) \circ (g:\tau \rightarrow \tau)):\tau \rightarrow \tau$
+      \end{itemize}
+    \item Associativity
+      \begin{itemize}
+        \item $\forall f,g,h \in F : (f \circ g) \circ h = f
+          \circ (g \circ h)$
+        \item $\forall (x:\tau),\forall f,g,h \in F : (f \circ g) \circ
+          h\:x = f\:(g \circ h)\:x = f\:(g\:(h\:x))$
+        \item $\forall (x:\tau),\forall f,g,h \in F : f \circ (g \circ
+          h)\:x = f\:((g \circ h)\:x) = f\:(g\:(h\:x))$
+      \end{itemize}
+    \item Identity
+      \begin{itemize}
+        \item $\forall f \in F: id \circ f = f \circ id = f$
+        \item Here $id\:x = x$ is our identity element. $id$ is
+          polymorphic so it gets the type $(\tau \rightarrow \tau)
+          \rightarrow (\tau \rightarrow \tau)$
+        \item $\forall (x:\tau),\forall f \in F: (f \circ id)\:x = f\:(id\:x) = f\:x$
+        \item $\forall (x:\tau),\forall f \in F: (id \circ f)\:x =
+          id(f\:x) = f\:x$
+        \item Mind that by definition of $id$, $id\:f\:x = f\:x$ and
+          $f\:(id\:x) = f\:x$. Not applying to $x$, we just get $f$ in
+          both cases.
       \end{itemize}
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Natural number type}
-  \framesubtitle{Basic typing in action}
-  Firstly, we're going to add type $N$ to the set of our base types $B$ such that
-  $N \in B$. For this example, it's perfectly fine if $B = {N}$.\\
-  Secondly, we add two clauses to our syntax of expressions
+  \frametitle{Monoids}
+  \framesubtitle{Small caveat}
+  It's important to note that for functions to form a monoid under
+  composition, the functions must be of a uniform type: that is, for
+  any function $f^n$ where $f^0:a$, $f^1:a \rightarrow a$, $f^k$ takes
+  $k$ arguments of type $a$.\\
+  \pause
+  This means that a set of all functions $g:a \rightarrow b$ does not
+  form a monoid under composition where $a \neq b$: it is only in a
+  monoidal category; we can't compose two $a \rightarrow b$ functions
+  together.\\
+  \pause
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Usage}
+  So, what's the point of monoids?
   \pause
   \begin{itemize}[<+->]
-  \item Primitive Recursion
-    \begin{itemize}
-      \item for all types $\tau$, if $e_0:\tau$, $f:(N \Rightarrow
-        \tau \Rightarrow \tau)$ then $Prec\:e_0\:f:N \Rightarrow
-        \tau$.
-      \item $Prec$ is the `primitive recursor'
-      \item Rules for $Prec$ are
+    \item We get a $fold$ operation for free.
       \begin{itemize}
-        \item $Prec\:e_0\:f\:0 \rightarrow e_0$
-        \item $Prec\:e_0\:f\:(n + 1) \rightarrow
-          f\:n\:(Prec\:e_0\:f\:n)$
+        \item Python's $reduce$ with the unit used as the initial
+          value
       \end{itemize}
-    \item $\rightarrow$ is read as `reduces to' here
-    \end{itemize}
+    \item For functions, it ensures that whatever we do, we stay in
+      the monoid
+      \begin{itemize}
+        \item Gives us assurance about what we can do
+        \item Composing small parts is the way to control complexity
+      \end{itemize}
+    \item Only a step away from the ever powerful monads!
   \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Questions}
+  Hopefully I miraculously managed to fit in my assigned time.\\
+  Feel free to ask any questions or point out any mistakes.
+  \begin{block}{Contact}
+    mk440@bath.ac.uk; fuuzetsu@fuuzetsu.co.uk\\
+    Get these slides at
+    https://github.com/ShanaTsunTsunLove/foundations-talk
+  \end{block}
+  \begin{block}{A quote from the \#haskell IRC channel}
+    * roconnor: where are all the category theoriest? why don't they
+    already have all the answers for us?\\
+    * edwardk: roconnor: this is the point in your career where you look
+    around for the cavalry and realize that you're it ;)
+  \end{block}
 \end{frame}
 \end{document}
 %%% Local Variables:
