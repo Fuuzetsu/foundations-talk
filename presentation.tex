@@ -96,7 +96,6 @@
   Here I'm going to define a notation that's more common in functional
   programming languages. The imperative language snippets are going to
   be in Java.\\
-  Here we have a simple method from $int$ to $int$
   \pause
   \lstinputlisting[language=Java]{snippets/SingleVar.java}
   \pause
@@ -120,7 +119,7 @@
   With the new notation, we can write the type of $f$ as $f:int
   \rightarrow int$.\\
   \pause
-  Note how $x:int$ and $f:int \rightarrow int$ use the same notation.
+  Note how $x:int$ and $f:int \rightarrow int$ use the same notation.\\
   \pause
   We also define $a \rightarrow b \rightarrow c \equiv (a
   \rightarrow b) \rightarrow c$, i.e. the type signature is left associative.
@@ -147,6 +146,7 @@
   \lstinputlisting[language=Java]{snippets/TwoBasicFunc.java}
   \pause
   We have $f:int \rightarrow int$ and $g:int \rightarrow int$.\\
+  \pause
   Let's say we want to apply $g$ first and then $f$ to the result. In Java
   we'd right \lstinline|f(g(v));|. With our new notation we write
   $f\:g\:v$. Note that application is left associative here.\\
@@ -196,10 +196,10 @@
   \pause
   $(a \rightarrow b)$ is just a function that takes a value of type
   $a$ and returns a value of type $b$. So what's $(a \rightarrow b)
-  \rightarrow a \rightarrow b$? Well, it's just a function that takes a value of
+  \rightarrow a \rightarrow b$? \pause
+  Well, it's just a function that takes a value of
   type $a \rightarrow b$, a value of type $a$ and returns a $b$. The
   first argument just happens to be a function!\\
-  \pause
 \end{frame}
 \begin{frame}
   \frametitle{Functions}
@@ -211,7 +211,6 @@
   \lstinputlisting[language=Java]{snippets/BasicFunc.java}
   We can write this function like this:
   \lstinputlisting{snippets/HaskFunc}
-  \pause
 \end{frame}
 \begin{frame}
   \frametitle{Functions}
@@ -238,7 +237,7 @@
   \framesubtitle{Composition}
   When we previously did a $f\:(g\:x)$, what we really wanted is a
   function that does $g$ and then $f$ on $x$, in order.\\
-  Here $f:b \rightarrow c$, $g:a \rightarrow b$ and $x:a$.
+  Here $f:b \rightarrow c$, $g:a \rightarrow b$ and $x:a$.\\
   \pause
   So we want some $h:a \rightarrow c$. How can we produce it? This is
   where function composition steps in.\\
