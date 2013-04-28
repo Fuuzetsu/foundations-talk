@@ -30,15 +30,65 @@
   \framesubtitle{Presentation structure}
   Structure of this presentation
   \begin{itemize}[<+->]
+    \item Monoid definition and simple example
     \item Functions
       \begin{itemize}
         \item more friendly notation and function composition
       \end{itemize}
-    \item Generic monoid definition
-    \item Simple monoid example (set of integers under addition)
-    \item List monoid example
+    \item Monoid under composition example
     \item Why would we ever want to abstract to a monoid?
   \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Monoid definition}
+  A monoid is a set $S$ along with a binary
+  operation $\cdot$ satisfying three simple laws:
+  \pause
+  \begin{itemize}[<+->]
+    \item Closure
+      \begin{itemize}
+        \item $\forall x,y \in S: x \cdot y \in S$
+      \end{itemize}
+    \item Associativity
+      \begin{itemize}
+        \item $\forall x,y,z \in S: (x \cdot y) \cdot z = x \cdot (y
+          \cdot z)$
+      \end{itemize}
+    \item Identity
+      \begin{itemize}
+        \item $\exists e \in S: \forall x \in S: e \cdot x = x \cdot e
+          = x$
+        \item Monoids where $x \cdot y = y \cdot x$ are called
+          commutative monoids
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{$\mathbb{Z}$ under addition}
+  We can easily show that a set of all integers ($\mathbb{Z}$) is a monoid
+  under addition: that is, we use $+$ for our $\cdot$.
+  \pause
+  \begin{itemize}[<+->]
+    \item Closure
+      \begin{itemize}
+        \item $\forall x,y \in \mathbb{Z} : x + y \in \mathbb{Z}$
+      \end{itemize}
+    \item Associativity
+      \begin{itemize}
+        \item $\forall x,y,z \in \mathbb{Z} : (x + y) + z = x + (y + z)$
+      \end{itemize}
+    \item Identity
+      \begin{itemize}
+        \item $\forall x \in \mathbb{Z} : 0 + x = x + 0 = x$
+        \item Here $0$ is our identity element
+        \item Happens to be a commutative monoid thanks to addition
+      \end{itemize}
+  \end{itemize}
+  \pause
+  We can also very easily show that $\mathbb{Z} / \{0\}$ under multiplication is
+  also a monoid: we use $1$ as the identity element.
 \end{frame}
 \begin{frame}
   \frametitle{Functions}
@@ -48,7 +98,7 @@
   be in Java.\\
   Here we have a simple method from $int$ to $int$
   \pause
-  \lstinputlisting{snippets/SingleVar.java}
+  \lstinputlisting[language=Java]{snippets/SingleVar.java}
   \pause
   We see that $x$ is given type $int$.\\
   From here on, we shall write this down as $x:int$.\\
@@ -62,7 +112,7 @@
   the fact that Java only has methods; making those methods static
   aims to lessen the difference.
   \pause
-  \lstinputlisting{snippets/BasicFunc.java}
+  \lstinputlisting[language=Java]{snippets/BasicFunc.java}
   \pause
   Here we have a very simple function $f$ that takes an $int$ (and binds it to
   $x$) and returns an $int$.\\
@@ -80,7 +130,7 @@
   \framesubtitle{Notation}
   Time for simple function application. Consider the same code again.
   \pause
-  \lstinputlisting{snippets/BasicFunc.java}
+  \lstinputlisting[language=Java]{snippets/BasicFunc.java}
   \pause
   We know that $f:int \rightarrow int$. Now consider any $v:int$. In
   Java, we might use the function like \lstinline|a = f(v);|. What is
@@ -94,7 +144,7 @@
   \frametitle{Functions}
   \framesubtitle{Composition}
   Consider the following.
-  \lstinputlisting{snippets/TwoBasicFunc.java}
+  \lstinputlisting[language=Java]{snippets/TwoBasicFunc.java}
   \pause
   We have $f:int \rightarrow int$ and $g:int \rightarrow int$.\\
   Let's say we want to apply $g$ first and then $f$ to the result. In Java
@@ -105,7 +155,7 @@
   \frametitle{Functions}
   \framesubtitle{Composition}
   Let's not stop on $int$s though and go generic.
-  \lstinputlisting{snippets/Identity.java}
+  \lstinputlisting[language=Java]{snippets/Identity.java}
   \pause
   Here we have a function $id:A \rightarrow A$; it's a trivial
   function that just returns its argument. What's important is that
@@ -158,7 +208,7 @@
   function is fairly trivial. We need to define syntax for creating
   functions first though.\\
   \pause
-  \lstinputlisting{snippets/BasicFunc.java}
+  \lstinputlisting[language=Java]{snippets/BasicFunc.java}
   We can write this function like this:
   \lstinputlisting{snippets/HaskFunc}
   \pause
@@ -206,61 +256,8 @@
 \end{frame}
 \begin{frame}
   \frametitle{Monoids}
-  \framesubtitle{Monoid definition}
-  Now that we have a sane notation and function composition, we can
-  finally define a monoid. A monoid is a set $S$ along with a binary
-  operation $\cdot$ satisfying three simple laws:
-  \pause
-  \begin{itemize}[<+->]
-    \item Closure
-      \begin{itemize}
-        \item $\forall x,y \in S: x \cdot y \in S$
-      \end{itemize}
-    \item Associativity
-      \begin{itemize}
-        \item $\forall x,y,z \in S: (x \cdot y) \cdot z = x \cdot (y
-          \cdot z)$
-      \end{itemize}
-    \item Identity
-      \begin{itemize}
-        \item $\exists e \in S: \forall x \in S: e \cdot x = x \cdot e
-          = x$
-        \item Monoids where $x \cdot y = y \cdot x$ are called
-          commutative monoids
-      \end{itemize}
-  \end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{Monoids}
-  \framesubtitle{$\mathbb{Z}$ under addition}
-  We can easily show that a set of all integers ($\mathbb{Z}$) is a monoid
-  under addition: that is, we use $+$ for our $\cdot$.
-  \pause
-  \begin{itemize}[<+->]
-    \item Closure
-      \begin{itemize}
-        \item $\forall x,y \in \mathbb{Z} : x + y \in \mathbb{Z}$
-      \end{itemize}
-    \item Associativity
-      \begin{itemize}
-        \item $\forall x,y,z \in \mathbb{Z} : (x + y) + z = x + (y + z)$
-      \end{itemize}
-    \item Identity
-      \begin{itemize}
-        \item $\forall x \in \mathbb{Z} : 0 + x = x + 0 = x$
-        \item Here $0$ is our identity element
-        \item Happens to be a commutative monoid thanks to addition
-      \end{itemize}
-  \end{itemize}
-  \pause
-  We can also very easily show that $\mathbb{Z} / \{0\}$ under multiplication is
-  also a monoid: we use $1$ as the identity element.
-\end{frame}
-\begin{frame}
-  \frametitle{Monoids}
   \framesubtitle{Functions under composition}
-  Having talked about functions and composition, it's time to put the
-  to use. Consider a set of all functions of type $\tau \rightarrow \tau$,
+  Having talked about functions and composition, it's time to put them to use. Consider a set of all functions of type $\tau \rightarrow \tau$,
   F. We can form a monoid using $\circ$ as $\cdot$.
   \pause
   \begin{itemize}[<+->]
@@ -328,12 +325,18 @@
   \end{itemize}
 \end{frame}
 \begin{frame}
+  \frametitle{Monoids}
+  \framesubtitle{Example}
+  Here's output from a proof of concept monoid code written in Java.
+ \lstinputlisting[basicstyle=\footnotesize]{snippets/output}
+\end{frame}
+\begin{frame}
   \frametitle{Questions}
   Hopefully I miraculously managed to fit in my assigned time.\\
   Feel free to ask any questions or point out any mistakes.
   \begin{block}{Contact}
     mk440@bath.ac.uk; fuuzetsu@fuuzetsu.co.uk\\
-    Get these slides at
+    Get these slides and all code at
     https://github.com/ShanaTsunTsunLove/foundations-talk
   \end{block}
   \begin{block}{A quote from the \#haskell IRC channel}
